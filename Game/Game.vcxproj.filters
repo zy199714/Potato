@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{bcad0601-79c0-430a-b45f-2b1e64a5c721}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Material">
+      <UniqueIdentifier>{3fcc9c3d-9713-4e82-ba35-2a817b85b361}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Material\src">
+      <UniqueIdentifier>{2df1f333-16c8-401e-9957-17203dea3865}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Material\effect">
+      <UniqueIdentifier>{308e534d-5157-4a9c-a2f8-45ed9d8ac0d3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GameApp.h" />
+    <ClInclude Include="DefaultMaterial.h">
+      <Filter>Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Effects.h">
+      <Filter>Material\effect</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="WinMain.cpp" />
+    <ClCompile Include="DefaultMaterial.cpp">
+      <Filter>Material\src</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultEffect.cpp">
+      <Filter>Material\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyEffect.cpp">
+      <Filter>Material\effect</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainEffect.cpp">
+      <Filter>Material\effect</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

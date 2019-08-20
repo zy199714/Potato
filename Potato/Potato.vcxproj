@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{36E4A36C-2FB2-4473-88C9-A7ADD0A7A92E}</ProjectGuid>
+    <RootNamespace>Potato</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>$(ProjectDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)assimp\lib\assimp_debug-dll_win32;$(LibraryPath)</LibraryPath>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>$(ProjectDir);</IncludePath>
+    <LibraryPath>$(SolutionDir)assimp\lib\assimp_release-dll_win32;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(ProjectDir);</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(ProjectDir);</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>mkdir $(SolutionDir)Game\$(SolutionName)\lib\x86
+mkdir $(SolutionDir)Game\$(SolutionName)\lib\x86\Debug
+mkdir $(SolutionDir)Game\$(SolutionName)\include
+mkdir $(SolutionDir)Game\$(SolutionName)\include\core
+mkdir $(SolutionDir)Game\$(SolutionName)\include\tools
+xcopy $(LocalDebuggerCommand) /y $(SolutionDir)Game\$(SolutionName)\lib\x86\Debug
+xcopy $(ProjectDir)core\*.h* /y $(SolutionDir)Game\$(SolutionName)\include\core
+xcopy $(ProjectDir)tools\*.h* /y $(SolutionDir)Game\$(SolutionName)\include\tools</Command>
+      <Message>移动 lib</Message>
+    </PostBuildEvent>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)assimp\lib\assimp_debug-dll_win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>mkdir $(SolutionDir)Game\$(SolutionName)\lib\x64
+mkdir $(SolutionDir)Game\$(SolutionName)\lib\x64\Debug
+mkdir $(SolutionDir)Game\$(SolutionName)\include
+mkdir $(SolutionDir)Game\$(SolutionName)\include\core
+mkdir $(SolutionDir)Game\$(SolutionName)\include\tools
+move $(LocalDebuggerCommand) $(SolutionDir)Game\$(SolutionName)\lib\x64\Debug
+xcopy $(ProjectDir)core\*.h* /y $(SolutionDir)Game\$(SolutionName)\include\core
+xcopy $(ProjectDir)tools\*.h* /y $(SolutionDir)Game\$(SolutionName)\include\tools</Command>
+      <Message>移动 lib</Message>
+    </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <PostBuildEvent>
+      <Command>mkdir $(SolutionDir)Game\$(SolutionName)\lib\x86
+mkdir $(SolutionDir)Game\$(SolutionName)\lib\x86\Release
+mkdir $(SolutionDir)Game\$(SolutionName)\include
+mkdir $(SolutionDir)Game\$(SolutionName)\include\core
+mkdir $(SolutionDir)Game\$(SolutionName)\include\tools
+move $(LocalDebuggerCommand) $(SolutionDir)Game\$(SolutionName)\lib\x86\Release
+xcopy $(ProjectDir)core\*.h* /y $(SolutionDir)Game\$(SolutionName)\include\core
+xcopy $(ProjectDir)tools\*.h* /y $(SolutionDir)Game\$(SolutionName)\include\tools</Command>
+      <Message>移动 lib</Message>
+    </PostBuildEvent>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)assimp\lib\assimp_release-dll_win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <PostBuildEvent>
+      <Command>mkdir $(SolutionDir)Game\$(SolutionName)\lib\x64
+mkdir $(SolutionDir)Game\$(SolutionName)\lib\x64\Release
+mkdir $(SolutionDir)Game\$(SolutionName)\include
+mkdir $(SolutionDir)Game\$(SolutionName)\include\core
+mkdir $(SolutionDir)Game\$(SolutionName)\include\tools
+move $(LocalDebuggerCommand) $(SolutionDir)Game\$(SolutionName)\lib\x64\Release
+xcopy $(ProjectDir)core\*.h* /y $(SolutionDir)Game\$(SolutionName)\include\core
+xcopy $(ProjectDir)tools\*.h* /y $(SolutionDir)Game\$(SolutionName)\include\tools</Command>
+      <Message>移动 lib</Message>
+    </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="core\App3D.h" />
+    <ClInclude Include="core\BaseComponent.h" />
+    <ClInclude Include="core\DrawableComponent.h" />
+    <ClInclude Include="core\FirstPersonGameCamera.h" />
+    <ClInclude Include="core\GameCamera.h" />
+    <ClInclude Include="core\GameObject.h" />
+    <ClInclude Include="core\RenderSky.h" />
+    <ClInclude Include="core\RenderTerrain.h" />
+    <ClInclude Include="core\StaticMesh.h" />
+    <ClInclude Include="core\StaticMeshComponent.h" />
+    <ClInclude Include="tools\DDSTextureLoader.h" />
+    <ClInclude Include="tools\def.h" />
+    <ClInclude Include="tools\DXTrace.h" />
+    <ClInclude Include="tools\EffectBase.h" />
+    <ClInclude Include="tools\EffectHelper.h" />
+    <ClInclude Include="tools\GameTimer.h" />
+    <ClInclude Include="tools\Geometry.h" />
+    <ClInclude Include="tools\Keyboard.h" />
+    <ClInclude Include="tools\LightHelpr.h" />
+    <ClInclude Include="tools\Material.h" />
+    <ClInclude Include="tools\Mesh.h" />
+    <ClInclude Include="tools\ModelMaterial.h" />
+    <ClInclude Include="tools\Model.h" />
+    <ClInclude Include="tools\Mouse.h" />
+    <ClInclude Include="tools\nocopy.h" />
+    <ClInclude Include="tools\RenderStates.h" />
+    <ClInclude Include="tools\RenderTotexture.h" />
+    <ClInclude Include="tools\ScreenGrab.h" />
+    <ClInclude Include="tools\Util.h" />
+    <ClInclude Include="tools\Vertex.h" />
+    <ClInclude Include="tools\WICTextureLoader.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="core\src\App3D.cpp" />
+    <ClCompile Include="core\src\FirstPersonGameCamera.cpp" />
+    <ClCompile Include="core\src\GameCamera.cpp" />
+    <ClCompile Include="core\src\GameObject.cpp" />
+    <ClCompile Include="core\src\RenderSky.cpp" />
+    <ClCompile Include="core\src\RenderTerrain.cpp" />
+    <ClCompile Include="tools\src\DDSTextureLoader.cpp" />
+    <ClCompile Include="tools\src\DXTrace.cpp" />
+    <ClCompile Include="tools\src\GameTimer.cpp" />
+    <ClCompile Include="tools\src\Keyboard.cpp" />
+    <ClCompile Include="tools\src\Material.cpp" />
+    <ClCompile Include="tools\src\Mesh.cpp" />
+    <ClCompile Include="tools\src\ModelMaterial.cpp" />
+    <ClCompile Include="tools\src\Model.cpp" />
+    <ClCompile Include="tools\src\Mouse.cpp" />
+    <ClCompile Include="tools\src\RenderStates.cpp" />
+    <ClCompile Include="tools\src\RenderTotexture.cpp" />
+    <ClCompile Include="tools\src\ScreenGrab.cpp" />
+    <ClCompile Include="tools\src\Util.cpp" />
+    <ClCompile Include="tools\src\WICTextureLoader.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

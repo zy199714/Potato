@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="core">
+      <UniqueIdentifier>{12b8899c-f7e9-444a-ab91-a4f74d41cfc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\src">
+      <UniqueIdentifier>{057d92a1-03e2-4209-8363-790ee7c9dc42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools">
+      <UniqueIdentifier>{42bdaf0c-3df2-48e3-bcbd-d1debb19156a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tools\src">
+      <UniqueIdentifier>{e95827c3-5d50-4689-a3cc-6ae9e3b8f39b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\component">
+      <UniqueIdentifier>{91044850-19f4-484f-8146-26b810b0b65e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\src\component">
+      <UniqueIdentifier>{53dd1e22-ad87-4a56-83c3-504b175aa4cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\base">
+      <UniqueIdentifier>{4acfc96c-1a18-4342-9452-4f988247c06e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="tools\Util.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="core\App3D.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\DDSTextureLoader.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\DXTrace.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\Geometry.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\Keyboard.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\Mouse.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\RenderStates.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\ScreenGrab.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\Vertex.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\WICTextureLoader.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\def.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\GameTimer.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\nocopy.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="core\BaseComponent.h">
+      <Filter>core\component</Filter>
+    </ClInclude>
+    <ClInclude Include="core\DrawableComponent.h">
+      <Filter>core\component</Filter>
+    </ClInclude>
+    <ClInclude Include="core\StaticMesh.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\GameObject.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\StaticMeshComponent.h">
+      <Filter>core\component</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\Model.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\ModelMaterial.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\EffectBase.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\EffectHelper.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\Material.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\LightHelpr.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="core\FirstPersonGameCamera.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core\GameCamera.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\Mesh.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="tools\RenderTotexture.h">
+      <Filter>tools</Filter>
+    </ClInclude>
+    <ClInclude Include="core\RenderSky.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+    <ClInclude Include="core\RenderTerrain.h">
+      <Filter>core\base</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="tools\src\DDSTextureLoader.cpp">
+      <Filter>tools\src</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\src\DXTrace.cpp">
+      <Filter>tools\src</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\src\Keyboard.cpp">
+      <Filter>tools\src</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\src\Mouse.cpp">
+      <Filter>tools\src</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\src\RenderStates.cpp">
+      <Filter>tools\src</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\src\ScreenGrab.cpp">
+      <Filter>tools\src</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\src\WICTextureLoader.cpp">
+      <Filter>tools\src</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\src\GameTimer.cpp">
+      <Filter>tools\src</Filter>
+    </ClCompile>
+    <ClCompile Include="core\src\App3D.cpp">
+      <Filter>core\src</Filter>
+    </ClCompile>
+    <ClCompile Include="core\src\GameObject.cpp">
+      <Filter>core\src</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\src\Model.cpp">
+      <Filter>tools\src</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\src\ModelMaterial.cpp">
+      <Filter>tools\src</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\src\Material.cpp">
+      <Filter>tools\src</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\src\Util.cpp">
+      <Filter>tools\src</Filter>
+    </ClCompile>
+    <ClCompile Include="core\src\FirstPersonGameCamera.cpp">
+      <Filter>core\src</Filter>
+    </ClCompile>
+    <ClCompile Include="core\src\GameCamera.cpp">
+      <Filter>core\src</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\src\Mesh.cpp">
+      <Filter>tools\src</Filter>
+    </ClCompile>
+    <ClCompile Include="core\src\RenderSky.cpp">
+      <Filter>core\src</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\src\RenderTotexture.cpp">
+      <Filter>tools\src</Filter>
+    </ClCompile>
+    <ClCompile Include="core\src\RenderTerrain.cpp">
+      <Filter>core\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
