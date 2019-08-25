@@ -3,11 +3,15 @@
 
 namespace Potato
 {
-
-	RenderTerrain::RenderTerrain(ID3D11Device* device, ID3D11DeviceContext* deviceContext, UINT levels /* =1 */)
-		: mtype(VertexType_Pos)
+	RenderTerrain::RenderTerrain(ID3D11Device* device, UINT levels /*= 10*/, std::string highmap /*= ""*/)
+		: mtype(VertexType_PosNormalTex)
 	{
-		mesh = new Mesh(device, Geometry::CreateTerrain() , mtype);
+		BitMap* bitMap = new BitMap;
+		LoadBitMap("Model/" + highmap, bitMap);
+
+		mesh = new Mesh(device, Geometry::CreateTerrain(levels, bitMap) , mtype);
+
+		DeleteObject(bitMap);
 	}
 
 	RenderTerrain::~RenderTerrain()
@@ -20,7 +24,6 @@ namespace Potato
 		deviceContext->IASetVertexBuffers(0, VertexBufferCount[mtype], mesh->GetVertexBuffer(), VertexStrides[mtype], VertexOffsets[mtype]);
 		deviceContext->IASetIndexBuffer(mesh->GetIndicesBuffer(), DXGI_FORMAT_R32_UINT, 0);
 	
-		effect->SetWorldMatrix(DirectX::XMMATRIX(1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f));
 		effect->Apply(deviceContext);
 
 		deviceContext->DrawIndexed(mesh->GetIndexCount(), 0, 0);

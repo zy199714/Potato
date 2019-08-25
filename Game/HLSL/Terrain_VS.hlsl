@@ -1,11 +1,15 @@
 #include "Terrain.hlsli"
 
-VertexPosHL VS(VertexPos vIn)
+VertexPosH VS(VertexPosTex vIn)
 {
-    VertexPosHL vOut;
-    
-	float4 posW = mul(float4(vIn.PosL, 1.0f), gWorld);
-    vOut.PosH = mul(posW, gViewProj);
-    vOut.PosL = vIn.PosL;
+    VertexPosH vOut;
+    float4 posw = float4(vIn.PosL, 1.0f);
+	
+    vOut.PosW = posw;
+    vOut.PosH = mul(posw, gViewProj);
+    vOut.NormalW = vIn.Normal;
+
     return vOut;
-}
+};
+
+

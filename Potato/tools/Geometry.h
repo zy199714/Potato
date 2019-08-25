@@ -1,15 +1,16 @@
-//***************************************************************************************
-// Éú³É³£¼ûµÄ¼¸ºÎÌåÍø¸ñÄ£ĞÍ
+ï»¿//***************************************************************************************
+// ç”Ÿæˆå¸¸è§çš„å‡ ä½•ä½“ç½‘æ ¼æ¨¡å‹
 // Generate common geometry meshes.
 //***************************************************************************************
 
 #ifndef GEOMETRY_H_
 #define GEOMETRY_H_
 
-#include <vector>
 #include <string>
-#include <map>
+#include <fstream>
+#include <iostream>
 #include "Vertex.h"
+#include "def.h"
 
 namespace Potato
 {
@@ -23,7 +24,7 @@ namespace Potato
 			DirectX::XMFLOAT4 color;
 			DirectX::XMFLOAT2 tex;
 		};
-		// Íø¸ñÊı¾İ
+		// ç½‘æ ¼æ•°æ®
 		struct MeshData
 		{
 			std::vector<DirectX::XMFLOAT3> position;
@@ -53,41 +54,40 @@ namespace Potato
 			};
 		};
 	
-		// ÇòÌåÍø¸ñÊı¾İ£¬levels Ë®Æ½·Ö¶Î(>=1)£¬slices´¹Ö±·Ö¶Î(>=3)£¬Ô½´ó¾«¶ÈÔ½¸ß
+		// çƒä½“ç½‘æ ¼æ•°æ®ï¼Œlevels æ°´å¹³åˆ†æ®µ(>=1)ï¼Œsliceså‚ç›´åˆ†æ®µ(>=3)ï¼Œè¶Šå¤§ç²¾åº¦è¶Šé«˜
 		MeshData CreateSphere(float radius = 1.0f, UINT levels = 20, UINT slices = 20, const DirectX::XMFLOAT4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
 	
-		// ´´½¨Á¢·½ÌåÍø¸ñÊı¾İ
+		// åˆ›å»ºç«‹æ–¹ä½“ç½‘æ ¼æ•°æ®
 		MeshData CreateBox(float width = 2.0f, float height = 2.0f, float depth = 2.0f, const DirectX::XMFLOAT4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
 	
-		// Ô²ÖùÌåÍø¸ñÊı¾İ£¬levels Ë®Æ½·Ö¶Î(>=2)£¬slices´¹Ö±·Ö¶Î(>=3)£¬Ô½´ó¾«¶ÈÔ½¸ß
+		// åœ†æŸ±ä½“ç½‘æ ¼æ•°æ®ï¼Œlevels æ°´å¹³åˆ†æ®µ(>=2)ï¼Œsliceså‚ç›´åˆ†æ®µ(>=3)ï¼Œè¶Šå¤§ç²¾åº¦è¶Šé«˜
 		MeshData CreateCylinder(float radius = 1.0f, float height = 2.0f, UINT levels = 2, UINT slices = 16, const DirectX::XMFLOAT4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
 	
-		// Ö»ÓĞÔ²ÖùÌå²àÃæµÄÍø¸ñÊı¾İ£¬levels Ë®Æ½·Ö¶Î(>=2)£¬slices´¹Ö±·Ö¶Î(>=3)£¬Ô½´ó¾«¶ÈÔ½¸ß
+		// åªæœ‰åœ†æŸ±ä½“ä¾§é¢çš„ç½‘æ ¼æ•°æ®ï¼Œlevels æ°´å¹³åˆ†æ®µ(>=2)ï¼Œsliceså‚ç›´åˆ†æ®µ(>=3)ï¼Œè¶Šå¤§ç²¾åº¦è¶Šé«˜
 		MeshData CreateCylinderNoCap(float radius = 1.0f, float height = 2.0f, UINT levels = 2, UINT slices = 16,
 			const DirectX::XMFLOAT4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
 	
-		// ¸²¸ÇNDCÆÁÄ»µÄÃæ
+		// è¦†ç›–NDCå±å¹•çš„é¢
 		MeshData Create2DShow( const DirectX::XMFLOAT2& center, const DirectX::XMFLOAT2& scale = { 1.0f, 1.0f },
 			const DirectX::XMFLOAT4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
 		MeshData Create2DShow(float centerX = 0.0f, float centerY = 0.0f, float scaleX = 1.0f, float scaleY = 1.0f,
 			const DirectX::XMFLOAT4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
 	
-		// Æ½Ãæ
+		// å¹³é¢
 		MeshData CreatePlane(const DirectX::XMFLOAT3& center, const DirectX::XMFLOAT2& planeSize = { 10.0f, 10.0f },
 			const DirectX::XMFLOAT2& maxTexCoord = { 1.0f, 1.0f }, const DirectX::XMFLOAT4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
 		MeshData CreatePlane(float centerX = 0.0f, float centerY = 0.0f, float centerZ = 0.0f,
 			float width = 10.0f, float depth = 10.0f, float texU = 1.0f, float texV = 1.0f,
 			const DirectX::XMFLOAT4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
-		// µØÆ½Ãæ£¬ÒÔÔ­µãÎªÖĞĞÄµÄ·½ĞÎ£¬levels ·Ö¶Î
-		MeshData CreateTerrain(UINT levels = 10, const DirectX::XMFLOAT4& color = { 1.0f, 1.0f, 1.0f, 1.0f });
-}
+		// åœ°å¹³é¢ï¼Œä»¥åŸç‚¹ä¸ºä¸­å¿ƒçš„æ–¹å½¢ï¼Œlevels åˆ†æ®µ
+		MeshData CreateTerrain(UINT levels = 10, BitMap* heightmap = nullptr);
+	}
 	
 	namespace Geometry
 	{
-		//
-		// ¼¸ºÎÌå·½·¨µÄÊµÏÖ
-		//
-	
+
+		// å‡ ä½•ä½“æ–¹æ³•çš„å®ç°
+
 		inline MeshData CreateSphere(float radius, UINT levels, UINT slices, const DirectX::XMFLOAT4 & color)
 		{
 			using namespace DirectX;
@@ -106,21 +106,21 @@ namespace Potato
 			float per_theta = XM_2PI / slices;
 			float x, y, z;
 	
-			// ·ÅÈë¶¥¶Ëµã
+			// æ”¾å…¥é¡¶ç«¯ç‚¹
 			vertexData = { XMFLOAT3(0.0f, radius, 0.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), color, XMFLOAT2(0.0f, 0.0f) };
 			meshData.insert(vertexData);
 	
 			for (UINT i = 1; i <= levels; ++i)
 			{
 				phi = per_phi * i;
-				// ĞèÒªslices + 1¸ö¶¥µãÊÇÒòÎª ÆğµãºÍÖÕµãĞèÎªÍ¬Ò»µã£¬µ«ÎÆÀí×ø±êÖµ²»Ò»ÖÂ
+				// éœ€è¦slices + 1ä¸ªé¡¶ç‚¹æ˜¯å› ä¸º èµ·ç‚¹å’Œç»ˆç‚¹éœ€ä¸ºåŒä¸€ç‚¹ï¼Œä½†çº¹ç†åæ ‡å€¼ä¸ä¸€è‡´
 				for (UINT j = 0; j <= slices; ++j)
 				{
 					theta = per_theta * j;
 					x = radius * sinf(phi) * cosf(theta);
 					y = radius * cosf(phi);
 					z = radius * sinf(phi) * sinf(theta);
-					// ¼ÆËã³ö¾Ö²¿×ø±ê¡¢·¨ÏòÁ¿¡¢TangentÏòÁ¿ºÍÎÆÀí×ø±ê
+					// è®¡ç®—å‡ºå±€éƒ¨åæ ‡ã€æ³•å‘é‡ã€Tangentå‘é‡å’Œçº¹ç†åæ ‡
 					XMFLOAT3 pos = XMFLOAT3(x, y, z), normal;
 					XMStoreFloat3(&normal, XMVector3Normalize(XMLoadFloat3(&pos)));
 					vertexData = { pos, normal, XMFLOAT3(-sinf(theta), 0.0f, cosf(theta)), color, XMFLOAT2(theta / XM_2PI, phi / XM_PI) };
@@ -129,7 +129,7 @@ namespace Potato
 				}
 			}
 	
-			// ·ÅÈëµ×¶Ëµã
+			// æ”¾å…¥åº•ç«¯ç‚¹
 			vertexData = { XMFLOAT3(0.0f, -radius, 0.0f), XMFLOAT3(0.0f, -1.0f, 0.0f), XMFLOAT3(-1.0f, 0.0f, 0.0f), color, XMFLOAT2(0.0f, 1.0f) };
 			meshData.insert(vertexData);
 	
@@ -175,32 +175,32 @@ namespace Potato
 			VertexData vertexDataArr[24];
 			float w2 = width / 2, h2 = height / 2, d2 = depth / 2;
 	
-			// ÓÒÃæ(+X Ãæ)
+			// å³é¢(+X é¢)
 			vertexDataArr[0].pos = XMFLOAT3(w2, -h2, -d2);
 			vertexDataArr[1].pos = XMFLOAT3(w2, h2, -d2);
 			vertexDataArr[2].pos = XMFLOAT3(w2, h2, d2);
 			vertexDataArr[3].pos = XMFLOAT3(w2, -h2, d2);
-			// ×óÃæ(-X Ãæ)
+			// å·¦é¢(-X é¢)
 			vertexDataArr[4].pos = XMFLOAT3(-w2, -h2, d2);
 			vertexDataArr[5].pos = XMFLOAT3(-w2, h2, d2);
 			vertexDataArr[6].pos = XMFLOAT3(-w2, h2, -d2);
 			vertexDataArr[7].pos = XMFLOAT3(-w2, -h2, -d2);
-			// ¶¥Ãæ(+Y Ãæ)
+			// é¡¶é¢(+Y é¢)
 			vertexDataArr[8].pos = XMFLOAT3(-w2, h2, -d2);
 			vertexDataArr[9].pos = XMFLOAT3(-w2, h2, d2);
 			vertexDataArr[10].pos = XMFLOAT3(w2, h2, d2);
 			vertexDataArr[11].pos = XMFLOAT3(w2, h2, -d2);
-			// µ×Ãæ(-Y Ãæ)
+			// åº•é¢(-Y é¢)
 			vertexDataArr[12].pos = XMFLOAT3(w2, -h2, -d2);
 			vertexDataArr[13].pos = XMFLOAT3(w2, -h2, d2);
 			vertexDataArr[14].pos = XMFLOAT3(-w2, -h2, d2);
 			vertexDataArr[15].pos = XMFLOAT3(-w2, -h2, -d2);
-			// ±³Ãæ(+Z Ãæ)
+			// èƒŒé¢(+Z é¢)
 			vertexDataArr[16].pos = XMFLOAT3(w2, -h2, d2);
 			vertexDataArr[17].pos = XMFLOAT3(w2, h2, d2);
 			vertexDataArr[18].pos = XMFLOAT3(-w2, h2, d2);
 			vertexDataArr[19].pos = XMFLOAT3(-w2, -h2, d2);
-			// ÕıÃæ(-Z Ãæ)
+			// æ­£é¢(-Z é¢)
 			vertexDataArr[20].pos = XMFLOAT3(-w2, -h2, -d2);
 			vertexDataArr[21].pos = XMFLOAT3(-w2, h2, -d2);
 			vertexDataArr[22].pos = XMFLOAT3(w2, h2, -d2);
@@ -208,27 +208,27 @@ namespace Potato
 	
 			for (UINT i = 0; i < 4; ++i)
 			{
-				// ÓÒÃæ(+X Ãæ)
+				// å³é¢(+X é¢)
 				vertexDataArr[i].normal = XMFLOAT3(1.0f, 0.0f, 0.0f);
 				vertexDataArr[i].tangent = XMFLOAT3(0.0f, 0.0f, 1.0f);
 				vertexDataArr[i].color = color;
-				// ×óÃæ(-X Ãæ)
+				// å·¦é¢(-X é¢)
 				vertexDataArr[i + 4].normal = XMFLOAT3(-1.0f, 0.0f, 0.0f);
 				vertexDataArr[i + 4].tangent = XMFLOAT3(0.0f, 0.0f, -1.0f);
 				vertexDataArr[i + 4].color = color;
-				// ¶¥Ãæ(+Y Ãæ)
+				// é¡¶é¢(+Y é¢)
 				vertexDataArr[i + 8].normal = XMFLOAT3(0.0f, 1.0f, 0.0f);
 				vertexDataArr[i + 8].tangent = XMFLOAT3(1.0f, 0.0f, 0.0f);
 				vertexDataArr[i + 8].color = color;
-				// µ×Ãæ(-Y Ãæ)
+				// åº•é¢(-Y é¢)
 				vertexDataArr[i + 12].normal = XMFLOAT3(0.0f, -1.0f, 0.0f);
 				vertexDataArr[i + 12].tangent = XMFLOAT3(-1.0f, 0.0f, 0.0f);
 				vertexDataArr[i + 12].color = color;
-				// ±³Ãæ(+Z Ãæ)
+				// èƒŒé¢(+Z é¢)
 				vertexDataArr[i + 16].normal = XMFLOAT3(0.0f, 0.0f, 1.0f);
 				vertexDataArr[i + 16].tangent = XMFLOAT3(-1.0f, 0.0f, 0.0f);
 				vertexDataArr[i + 16].color = color;
-				// ÕıÃæ(-Z Ãæ)
+				// æ­£é¢(-Z é¢)
 				vertexDataArr[i + 20].normal = XMFLOAT3(0.0f, 0.0f, -1.0f);
 				vertexDataArr[i + 20].tangent = XMFLOAT3(1.0f, 0.0f, 0.0f);
 				vertexDataArr[i + 20].color = color;
@@ -248,12 +248,12 @@ namespace Potato
 			}
 	
 			meshData.indexVec = {
-				0, 1, 2, 2, 3, 0,		// ÓÒÃæ(+X Ãæ)
-				4, 5, 6, 6, 7, 4,		// ×óÃæ(-X Ãæ)
-				8, 9, 10, 10, 11, 8,	// ¶¥Ãæ(+Y Ãæ)
-				12, 13, 14, 14, 15, 12,	// µ×Ãæ(-Y Ãæ)
-				16, 17, 18, 18, 19, 16, // ±³Ãæ(+Z Ãæ)
-				20, 21, 22, 22, 23, 20	// ÕıÃæ(-Z Ãæ)
+				0, 1, 2, 2, 3, 0,		// å³é¢(+X é¢)
+				4, 5, 6, 6, 7, 4,		// å·¦é¢(-X é¢)
+				8, 9, 10, 10, 11, 8,	// é¡¶é¢(+Y é¢)
+				12, 13, 14, 14, 15, 12,	// åº•é¢(-Y é¢)
+				16, 17, 18, 18, 19, 16, // èƒŒé¢(+Z é¢)
+				20, 21, 22, 22, 23, 20	// æ­£é¢(-Z é¢)
 			};
 	
 			return meshData;
@@ -268,17 +268,17 @@ namespace Potato
 
 			VertexData vertexData;
 
-			// ·ÅÈëµ×¶ËÔ²ĞÄ
+			// æ”¾å…¥åº•ç«¯åœ†å¿ƒ
 			vertexData = { XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(0.0f, -1.0f, 0.0f), XMFLOAT3(-1.0f, 0.0f, 0.0f), color, XMFLOAT2(0.5f, 0.5f) };
 			meshData.insert(vertexData);
-			// ·ÅÈë¶¥¶ËÔ²ĞÄ
+			// æ”¾å…¥é¡¶ç«¯åœ†å¿ƒ
 			vertexData = { XMFLOAT3(0.0f, height, 0.0f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT3(1.0f, 0.0f, 0.0f), color, XMFLOAT2(0.5f, 0.5f) };
 			meshData.insert(vertexData);
 
 			UINT vertexlast = meshData.position.size() - 1;
 			UINT iIndex = meshData.indexVec.size();
 
-			// Öğ½¥·ÅÈëµ×²¿Èı½ÇĞÎË÷Òı
+			// é€æ¸æ”¾å…¥åº•éƒ¨ä¸‰è§’å½¢ç´¢å¼•
 			for (UINT i = 0; i < slices; ++i)
 			{
 				meshData.indexVec.push_back(i + 1);
@@ -286,7 +286,7 @@ namespace Potato
 				meshData.indexVec.push_back(vertexlast-1);
 			}
 	
-			// Öğ½¥·ÅÈëµ×²¿Èı½ÇĞÎË÷Òı
+			// é€æ¸æ”¾å…¥åº•éƒ¨ä¸‰è§’å½¢ç´¢å¼•
 			UINT offset = (slices + 1) * (levels - 1);
 			for (UINT i = 0; i < slices; ++i)
 			{
@@ -314,7 +314,7 @@ namespace Potato
 			float per_height = height / (levels - 1);
 			float per_theta = XM_2PI / slices;
 	
-			// ·ÅÈë²àÃæ¶Ëµã
+			// æ”¾å…¥ä¾§é¢ç«¯ç‚¹
 			for (UINT i =0; i< levels; ++i)
 			{
 				h2 = per_height * i;
@@ -326,7 +326,7 @@ namespace Potato
 					meshData.insert(vertexData);
 				}
 			}
-			// ·ÅÈëË÷Òı
+			// æ”¾å…¥ç´¢å¼•
 			UINT iIndex = 0;
 	
 			for (UINT i = 0; i < levels-1; ++i)
@@ -419,48 +419,123 @@ namespace Potato
 			return meshData;
 		}
 
-		inline MeshData CreateTerrain(UINT levels /*= 10*/, const DirectX::XMFLOAT4 & color)
+		inline MeshData CreateTerrain(UINT levels /*= 10*/, BitMap* heightmap /*= nullptr*/)
 		{
 			using namespace DirectX;
 
-			assert(levels >= 10);
+			assert(levels >= 5);
 
-			UINT vertexCount = (levels+ 1) * (levels + 1);
-			UINT indexCount = (levels) * (levels+ 1) * 2 * 2;
+			UINT vertexCount = (levels + 1) * (levels + 1);
+			UINT indexCount = levels * (levels + 1) * 6;
 
 			MeshData meshData(vertexCount, indexCount);
-			VertexData vertexData;
 
-			float pos = levels / 2;
+			XMFLOAT4 color(1.0f, 1.0f, 1.0f, 1.0f);
+
+			float pos = levels / 2.0f;
 			float phi = 1.0f;
-			UINT posX, posZ;
+			float posX, posZ;
+			int index1, index2, index3, index4;
 
-			for (UINT i = 0; i <= levels; ++i)
+			if (heightmap == nullptr)
 			{
-				for (UINT j = 0; j <= levels; ++j)
+				// æ·»åŠ é¡¶ç‚¹
+				for (UINT i = 0; i <= levels; ++i)
 				{
-					posX = phi * j;
-					posZ = phi * i;
-					vertexData = { XMFLOAT3(posX - pos, 0.0f, posZ - pos),  XMFLOAT3(0.0f, 1.0f, 0.0f),
-						XMFLOAT3(1.0f, 0.0f, 0.0f), color, XMFLOAT2(posX / levels, posZ / levels) };
-					meshData.insert(vertexData);
+					for (UINT j = 0; j <= levels; ++j)
+					{
+						posX = phi * j;
+						posZ = phi * i;
+						meshData.insert( { XMFLOAT3(posX - pos, -0.001f, posZ - pos),  XMFLOAT3(0.0f, 1.0f, 0.0f),
+							XMFLOAT3(1.0f, 0.0f, 0.0f), color, XMFLOAT2(posX / levels, posZ / levels) });
+					}
+				}
+
+				// æ·»åŠ ç´¢å¼•
+				for (UINT i = 0; i < levels; ++i)
+				{
+					for (UINT j = 0; j < levels; ++j)
+					{	
+						//******************************
+						//  3______4
+						//  |          |
+						//  |          |
+						// 1Â¯Â¯Â¯Â¯Â¯Â¯Â¯2
+						//******************************
+						index1 = (levels+ 1) * i + j;
+						index2 = (levels + 1) * i + j + 1;
+						index3 = (levels + 1) * (i + 1) + j;
+						index4 = (levels + 1) * (i + 1) + j + 1;
+
+						meshData.indexVec.push_back(index1);
+						meshData.indexVec.push_back(index3);
+						meshData.indexVec.push_back(index2);
+
+						meshData.indexVec.push_back(index4);
+						meshData.indexVec.push_back(index2);
+						meshData.indexVec.push_back(index3);
+					}
+				}
+			}
+			else
+			{
+				XMFLOAT3 position1;
+				XMFLOAT3 position2;
+				XMFLOAT3 position3;
+				XMFLOAT3 position4;
+				XMFLOAT2 tex1;
+				XMFLOAT2 tex2;
+				XMFLOAT2 tex3;
+				XMFLOAT2 tex4;
+				XMFLOAT3 normal1;
+				XMFLOAT3 normal2;
+				XMVECTOR vector1;
+				XMVECTOR vector2;
+				XMVECTOR vector3;
+
+				UINT count = 0;
+				for (UINT i = 0; i < levels; ++i)
+				{
+					for (UINT j = 0; j < levels; ++j)
+					{
+						posX = phi * j;
+						posZ = phi * i;
+
+						tex1 = XMFLOAT2(posX / levels, posZ / levels);
+						tex2 = XMFLOAT2((posX + 1) / levels, posZ / levels);
+						tex3 = XMFLOAT2((posX + 1) / levels, (posZ + 1) / levels);
+						tex4 = XMFLOAT2(posX / levels, (posZ + 1) / levels);
+
+						position1 = XMFLOAT3(posX - pos, heightmap->Get(tex1).y * 10, posZ - pos);
+						position2 = XMFLOAT3(posX - pos + 1, heightmap->Get(tex2).y * 10, posZ - pos);
+						position3 = XMFLOAT3(posX - pos + 1, heightmap->Get(tex3).y * 10, posZ - pos + 1);
+						position4 = XMFLOAT3(posX - pos, heightmap->Get(tex4).y * 10, posZ - pos + 1);
+
+						vector1 = XMLoadFloat3(&position1);
+						vector2 = XMLoadFloat3(&position4);
+						vector3 = XMLoadFloat3(&position3);
+						XMStoreFloat3(&normal1, XMVector2Cross(vector2 - vector1, vector3 - vector1));
+						vector2 = XMLoadFloat3(&position2);
+						XMStoreFloat3(&normal2, XMVector2Cross(vector2 - vector1, vector3 - vector1));
+
+						meshData.insert( {position1,  normal1, XMFLOAT3(1.0f, 0.0f, 0.0f), color, tex1 });
+						meshData.indexVec.push_back(count++);
+						meshData.insert({ position4,  normal1, XMFLOAT3(1.0f, 0.0f, 0.0f), color, tex4 });
+						meshData.indexVec.push_back(count++);
+						meshData.insert({ position3,  normal1, XMFLOAT3(1.0f, 0.0f, 0.0f), color, tex3 });
+						meshData.indexVec.push_back(count++);
+
+
+						meshData.insert({ position3,  normal2, XMFLOAT3(1.0f, 0.0f, 0.0f), color, tex3 });
+						meshData.indexVec.push_back(count++);
+						meshData.insert({ position2,  normal2, XMFLOAT3(1.0f, 0.0f, 0.0f), color, tex2 });
+						meshData.indexVec.push_back(count++);
+						meshData.insert({ position1,  normal2, XMFLOAT3(1.0f, 0.0f, 0.0f), color, tex1 });
+						meshData.indexVec.push_back(count++);
+					}
 				}
 			}
 
-			// Ìí¼ÓË÷Òı
-			for (UINT i = 0; i < levels; ++i)
-			{
-				for (UINT j = 0; j < levels; ++j)
-				{
-					meshData.indexVec.push_back(((levels+ 1) * i + j));
-					meshData.indexVec.push_back(((levels+ 1) * i + j + 1));
-
-					meshData.indexVec.push_back(((levels+ 1) * i + j));
-					meshData.indexVec.push_back(((levels+ 1) * i + (levels+ 1) + j));
-				}
-				meshData.indexVec.push_back(((levels+ 1) * i + levels));
-				meshData.indexVec.push_back(((levels+ 1) * i + (levels+ 1) + levels));
-			}
 			return meshData;
 		}
 	}

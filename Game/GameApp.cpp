@@ -103,6 +103,18 @@ void GameApp::UpdateScene(float dt)
 	if (keyState.IsKeyDown(Keyboard::D))
 		mCamera->Strafe(dt * cameraSpeed);
 
+	/* map */
+
+	if (mKeyboardTracker.IsKeyPressed(Keyboard::D1))
+	{
+		mapOffest += 1;
+	}
+	if (mKeyboardTracker.IsKeyPressed(Keyboard::D2))
+	{
+		mapOffest -= 1;
+	}
+
+
 	// 视野旋转，防止开始的差值过大导致的突然旋转
 	mCamera->Pitch(mouseState.y * dt * 1.25f);
 	mCamera->Roll(mouseState.x * dt * 1.25f);
@@ -111,6 +123,9 @@ void GameApp::UpdateScene(float dt)
 	mCamera->UpdateViewMatrix();
 	defaultEffect.SetViewMatrix(mCamera->ViewMatrix());
 	defaultEffect.SetEyePos(mCamera->PositionVector());
+
+	terrainEffect.SetViewMatrix(mCamera->ViewPerspectiveProjectionMatrix());
+	terrainEffect.SetEyePos(mCamera->PositionVector());
 
 	defaultEffect.SetLightViewMatrix(mShadowCamera->ViewMatrix());
 	defaultEffect.SetLightProjMatrix(mShadowCamera->PerspectiveProjectionMatrix());
@@ -145,6 +160,7 @@ void GameApp::DrawScene()
 	//people.DrawObject(md3dImmediateContext, &defaultEffect);
 	//sphere.DrawObject(md3dImmediateContext, &defaultEffect);
 
+
 	//***************************************************
 	// ******************
 
@@ -170,6 +186,7 @@ void GameApp::DrawScene()
 bool GameApp::InitResource()
 {
 	mBox.SetModel(md3dDevice, VertexType_PosNormalTex, "Model\\box.obj");
+	mBox.SetPosition(0.0f, -1.0f, 0.0f);
 	mBox.CreateWorldMatrix();
 
 	people.SetModel(md3dDevice, VertexType_PosNormalTex, "Model\\body_bone_165_02.FBX");
@@ -187,11 +204,12 @@ bool GameApp::InitResource()
 			L"Model/texture/sunset_posZ.bmp", L"Model/texture/sunset_negZ.bmp", },
 		10000.0f);
 
-	mTerrain = new RenderTerrain(md3dDevice, md3dImmediateContext, 1);
+	mTerrain = new RenderTerrain(md3dDevice, 100, "texture/heightmap.bmp");
 
 	// 摄像机
 	mCamera = new FirstPersonGameCamera(mClientWidth, mClientHeight);
 	mCamera->SetPosition(0.0f, 0.0f, -20.0f);
+	mCamera->SetDirection(0.0f, 0.0f, 1.0f);
 	mCamera->SetViewPort(0.0f, 0.0f, (float)mClientWidth, (float)mClientHeight);
 
 	mShadowCamera = new FirstPersonGameCamera((float)mClientWidth, (float)mClientHeight);
@@ -210,7 +228,6 @@ bool GameApp::InitResource()
 	dirLight.diffuse = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
 	dirLight.specular = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
 	dirLight.direction = XMFLOAT3(-0.866f, -0.5f, 0.5f);
-	defaultEffect.SetDirLight(0, dirLight);
 
 	pointlight ponitLight;
 	ponitLight.ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
@@ -219,9 +236,14 @@ bool GameApp::InitResource()
 	ponitLight.position = XMFLOAT3(0.0f, 300.0f, 0.0f);;
 	ponitLight.att = XMFLOAT3(2.0f, 0.0f, 0.0f);
 	ponitLight.range = 1000.0f;
-	defaultEffect.SetPointLight(0, ponitLight);
 
+	defaultEffect.SetDirLight(0, dirLight);
+	defaultEffect.SetPointLight(0, ponitLight);
 	defaultEffect.SetNumLight(1, 0, 0);
+
+	terrainEffect.SetDirLight(0, dirLight);
+	terrainEffect.SetPointLight(0, ponitLight);
+	terrainEffect.SetNumLight(1, 0, 0);
 
 	material mat;
 	mat.ambient = { 0.3f, 0.3f, 0.3f,1.0f };
@@ -239,7 +261,7 @@ bool GameApp::InitResource()
 	defaultEffect.SetShadowBits(mShadowBits);
 
 	defaultEffect.SetViewMatrix(mCamera->ViewMatrix());
-	defaultEffect.SetProjMatrix(mCamera->ViewPerspectiveProjectionMatrix());
+	defaultEffect.SetProjMatrix(mCamera->PerspectiveProjectionMatrix());
 
 	terrainEffect.SetViewMatrix(mCamera->ViewPerspectiveProjectionMatrix());
 

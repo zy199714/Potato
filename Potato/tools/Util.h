@@ -11,6 +11,7 @@
 #include <d3d11.h>
 #include <DirectXColors.h>
 #include <d3dcompiler.h>
+#include <fstream>
 #include <filesystem>
 #include "nocopy.h"
 #include "def.h"
@@ -20,6 +21,7 @@
 
 namespace Potato
 {
+
 	//
 	// 着色器编译相关函数
 	//
@@ -38,6 +40,9 @@ namespace Potato
 		LPCSTR entryPoint,
 		LPCSTR shaderModel,
 		ID3DBlob** ppBlobOut);
+
+	// 加载位图
+	bool LoadBitMap(std::string filename, _Out_ BitMap* bitmap);
 
 	//
 	// 纹理数组相关函数

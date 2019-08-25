@@ -12,12 +12,13 @@ namespace Potato
 	class RenderTerrain
 	{
 	public:
-		RenderTerrain(ID3D11Device* device, ID3D11DeviceContext* deviceContext,UINT  levels = 1);
+		RenderTerrain(ID3D11Device* device, UINT  levels = 10, std::string highmap = "");
 		~RenderTerrain();
 
 		void DrawTerrain(ID3D11DeviceContext* deviceContext, EffectBase* effect);
 	private:
 		VertexType mtype;
+
 		Mesh* mesh;
 	};
 }

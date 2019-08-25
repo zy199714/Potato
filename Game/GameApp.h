@@ -59,6 +59,8 @@ private:
 
 	bool mShadowEnabled;
 	float mShadowBits;
+
+	float mapOffest;
 };
 #endif // !GAMEAPP_H
 

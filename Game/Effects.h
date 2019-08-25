@@ -101,12 +101,21 @@ public:
 	void SetRenderDefault(ID3D11DeviceContext* deviceContext) override;
 
 	void XM_CALLCONV SetWorldViewProjMatrix(DirectX::FXMMATRIX W, DirectX::CXMMATRIX V, DirectX::CXMMATRIX P) override {};
-	void XM_CALLCONV SetWorldMatrix(DirectX::FXMMATRIX W) override;
+	void XM_CALLCONV SetWorldMatrix(DirectX::FXMMATRIX W) override {};
 	void XM_CALLCONV SetViewMatrix(DirectX::FXMMATRIX PV) override;
 	void XM_CALLCONV SetProjMatrix(DirectX::FXMMATRIX P) override {};
 
-	void SetTexture(ID3D11DeviceContext* devicecontext, UINT startslot, UINT numview, ID3D11ShaderResourceView* texture) override {};
+	void SetTexture(ID3D11DeviceContext* devicecontext, UINT startslot, UINT numview, ID3D11ShaderResourceView* texture) override;
 	void SetTextureUsed(bool isUsed) override {};
+
+	//void SetOffest(float offest);
+
+	void SetDirLight(size_t pos, const directionlight& dirLight);
+	void SetPointLight(size_t pos, const pointlight& pointLight);
+	void SetSpotLight(size_t pos, const spotlight& spotLight);
+	void SetNumLight(int dir, int point, int spot);
+
+	void XM_CALLCONV SetEyePos(DirectX::FXMVECTOR eyePos);
 private:
 	class Impl;
 	std::unique_ptr<Impl> pImpl;

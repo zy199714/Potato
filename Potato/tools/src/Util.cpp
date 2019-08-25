@@ -53,6 +53,82 @@ namespace Potato
 		return hr;
 	}
 
+	bool LoadBitMap(std::string filename, _Out_ BitMap* bitmap)
+	{
+		FILE* filePtr;
+		int error;
+		UINT count;
+		BITMAPFILEHEADER bitmapFileHeader;
+		BITMAPINFOHEADER bitmapInfoHeader;
+		int imageSize;
+		unsigned char* bitmapImage;
+
+
+		// Open the height map file in binary.
+		error = fopen_s(&filePtr, filename.c_str(), "rb");
+		if (error != 0)
+		{
+			return false;
+		}
+
+		// Read in the file header.
+		count = fread(&bitmapFileHeader, sizeof(BITMAPFILEHEADER), 1, filePtr);
+		if (count != 1)
+		{
+			return false;
+		}
+
+		// Read in the bitmap info header.
+		count = fread(&bitmapInfoHeader, sizeof(BITMAPINFOHEADER), 1, filePtr);
+		if (count != 1)
+		{
+			return false;
+		}
+
+		// Save the dimensions of the terrain.
+		bitmap->bitWidth = bitmapInfoHeader.biWidth;
+		bitmap->bitHeight = bitmapInfoHeader.biHeight;
+
+		// Calculate the size of the bitmap image data.
+		imageSize = bitmapInfoHeader.biWidth * bitmapInfoHeader.biHeight * 3;
+
+		// Allocate memory for the bitmap image data.
+		bitmapImage = new unsigned char[imageSize];
+		if (!bitmapImage)
+		{
+			return false;
+		}
+
+		// Move to the beginning of the bitmap data.
+		fseek(filePtr, bitmapFileHeader.bfOffBits, SEEK_SET);
+
+		// Read in the bitmap image data.
+		count = fread(bitmapImage, 1, imageSize, filePtr);
+		if (count != imageSize)
+		{
+			return false;
+		}
+
+		// Close the file.
+		error = fclose(filePtr);
+		if (error != 0)
+		{
+			return false;
+		}
+
+		count = 0;
+		for (int i = 0; i < bitmapInfoHeader.biHeight; ++i)
+		{
+			for (int j = 0; j < bitmapInfoHeader.biWidth; ++j)
+			{
+				bitmap->color.push_back(DirectX::XMFLOAT3(bitmapImage[count++] / 255.0, bitmapImage[count++] / 255.0, bitmapImage[count++] / 255.0));
+			}
+		}
+
+		DeleteObjects(bitmapImage);
+		return true;
+	}
+
 	HRESULT CreateTexture2DArray(
 		ID3D11Device * d3dDevice,
 		ID3D11DeviceContext * d3dDeviceContext,
