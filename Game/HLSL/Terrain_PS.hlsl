@@ -2,14 +2,14 @@
 
 float4 PS(VertexPosH pIn) : SV_Target
 {
-    float4 texColor = float4(0.7f, 0.7f, 0.7f, 1.0f);
     Material mat =
     {
         { 0.3f, 0.3f, 0.3f, 1.0f },
-        { 0.8f, 0.8f, 0.8f, 1.0f },
-        { 0.1f, 0.1f, 0.1f, 1.0f },
-        { 0.0f, 0.0f, 0.0f, 0.0f }
+        { 0.12f, 0.12f, 0.12f},
+        0.5f 
     };
+    float4 diffuseAlbedo = mat.DiffuseAlbedo;
+
     // 标准化法向量
     pIn.NormalW = normalize(pIn.NormalW);
 
@@ -18,41 +18,34 @@ float4 PS(VertexPosH pIn) : SV_Target
     float distToEye = distance(gEyePosW, pIn.PosW);
 
     // 初始化为0 
-    float4 ambient = float4(0.0f, 0.0f, 0.0f, 0.0f);
-    float4 diffuse = float4(0.0f, 0.0f, 0.0f, 0.0f);
-    float4 spec = float4(0.0f, 0.0f, 0.0f, 0.0f);
-    float4 A = float4(0.0f, 0.0f, 0.0f, 0.0f);
-    float4 D = float4(0.0f, 0.0f, 0.0f, 0.0f);
-    float4 S = float4(0.0f, 0.0f, 0.0f, 0.0f);
+    float3 directLight = 0.0f;
     int i;
 
     [unroll]
     for (i = 0; i < gNumDirLight; ++i)
     {
-        ComputeDirectionalLight(mat, gDirLight[i], pIn.NormalW, toEyeW, A, D, S);
-        ambient += A;
-        diffuse += D;
-        spec += S;
+        directLight += ComputeDirectionalLight(mat, gDirLight[i], pIn.NormalW, toEyeW);
     }
         
     [unroll]
     for (i = 0; i < gNumPointLight; ++i)
     {
-        ComputePointLight(mat, gPointLight[i], pIn.PosW, pIn.NormalW, toEyeW, A, D, S);
-        ambient += A;
-        diffuse += D;
-        spec += S;
+        directLight += ComputePointLight(mat, gPointLight[i], pIn.PosW, pIn.NormalW, toEyeW);
     }
 
     [unroll]
     for (i = 0; i < gNumSpotLight; ++i)
     {
-        ComputeSpotLight(mat, gSpotLight[i], pIn.PosW, pIn.NormalW, toEyeW, A, D, S);
-        ambient += A;
-        diffuse += D;
-        spec += S;
+        directLight += ComputeSpotLight(mat, gSpotLight[i], pIn.PosW, pIn.NormalW, toEyeW);
     }
   
-   return texColor * (ambient + diffuse) + spec;
+    // 环境光
+    float4 ambient = gAmbientLight * diffuseAlbedo;
+
+    float4 litColor = ambient + float4(directLight, 0.0f);
+  
+    litColor.a = mat.DiffuseAlbedo.a;
+
+    return litColor;
 };
 

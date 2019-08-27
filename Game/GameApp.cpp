@@ -127,6 +127,8 @@ void GameApp::UpdateScene(float dt)
 	terrainEffect.SetViewMatrix(mCamera->ViewPerspectiveProjectionMatrix());
 	terrainEffect.SetEyePos(mCamera->PositionVector());
 
+	terrainEffect.SetViewMatrix(mCamera->ViewMatrix());
+
 	defaultEffect.SetLightViewMatrix(mShadowCamera->ViewMatrix());
 	defaultEffect.SetLightProjMatrix(mShadowCamera->PerspectiveProjectionMatrix());
 	defaultEffect.SetLightPos(mShadowCamera->PositionVector());
@@ -149,17 +151,21 @@ void GameApp::DrawScene()
 	//***************************************************
 	//  物体绘制
 	//***************************************************
-	terrainEffect.SetRenderDefault(md3dImmediateContext);
-	mTerrain->DrawTerrain(md3dImmediateContext, &terrainEffect);
-
 	skyEffect.SetRenderDefault(md3dImmediateContext);
 	mSkySunset->DrawSky(md3dImmediateContext, &skyEffect, mCamera);
+
+	terrainEffect.SetRenderDefault(md3dImmediateContext);
+	mTerrain->DrawTerrain(md3dImmediateContext, &terrainEffect);
 
 	defaultEffect.SetRenderDefault(md3dImmediateContext);
 	mBox.DrawObject(md3dImmediateContext, &defaultEffect);
 	//people.DrawObject(md3dImmediateContext, &defaultEffect);
 	//sphere.DrawObject(md3dImmediateContext, &defaultEffect);
 
+	// 法线绘制
+	//defaultEffect.SetRenderShowNormal(md3dImmediateContext);
+	//mBox.DrawObject(md3dImmediateContext, &defaultEffect);
+	//sphere.DrawObject(md3dImmediateContext, &defaultEffect);
 
 	//***************************************************
 	// ******************
@@ -186,20 +192,20 @@ void GameApp::DrawScene()
 bool GameApp::InitResource()
 {
 	mBox.SetModel(md3dDevice, VertexType_PosNormalTex, "Model\\box.obj");
-	mBox.SetPosition(0.0f, -1.0f, 0.0f);
+	mBox.SetPosition(0.0f, 0.0f, 0.0f);
 	mBox.CreateWorldMatrix();
 
-	people.SetModel(md3dDevice, VertexType_PosNormalTex, "Model\\body_bone_165_02.FBX");
-	people.SetPosition(0.0f, 0.0f, 10.0f);
-	people.CreateWorldMatrix();
+	//people.SetModel(md3dDevice, VertexType_PosNormalTex, "Model\\body_bone_165_02.FBX");
+	//people.SetPosition(0.0f, 0.0f, 10.0f);
+	//people.CreateWorldMatrix();
 
-	//sphere.SetModel(md3dDevice, VertexType_PosNormalTex, Geometry::CreateSphere(5.0f));
-	//sphere.SetPosition(0.0f, 2.0f, 0.0f);
+	//sphere.SetModel(md3dDevice, VertexType_PosNormalTex, Geometry::CreateSphere(2.0f, 12, 12));
+	//sphere.SetPosition(0.0f, 10.0f, 0.0f);
 	//sphere.CreateWorldMatrix();
 
 	mSkySunset = new RenderSky(md3dDevice, md3dImmediateContext,
 		std::vector<std::wstring>{
-		L"Model/texture/sunset_posX.bmp", L"Model/texture/sunset_negX.bmp",
+			L"Model/texture/sunset_posX.bmp", L"Model/texture/sunset_negX.bmp",
 			L"Model/texture/sunset_posY.bmp", L"Model/texture/sunset_negY.bmp",
 			L"Model/texture/sunset_posZ.bmp", L"Model/texture/sunset_negZ.bmp", },
 		10000.0f);
@@ -224,18 +230,7 @@ bool GameApp::InitResource()
 
 	// 方向光(默认)
 	directionlight dirLight;
-	dirLight.ambient = XMFLOAT4(0.25f, 0.25f, 0.25f, 1.0f);
-	dirLight.diffuse = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
-	dirLight.specular = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
-	dirLight.direction = XMFLOAT3(-0.866f, -0.5f, 0.5f);
-
 	pointlight ponitLight;
-	ponitLight.ambient = XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
-	ponitLight.diffuse = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
-	ponitLight.specular = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);
-	ponitLight.position = XMFLOAT3(0.0f, 300.0f, 0.0f);;
-	ponitLight.att = XMFLOAT3(2.0f, 0.0f, 0.0f);
-	ponitLight.range = 1000.0f;
 
 	defaultEffect.SetDirLight(0, dirLight);
 	defaultEffect.SetPointLight(0, ponitLight);
@@ -246,9 +241,9 @@ bool GameApp::InitResource()
 	terrainEffect.SetNumLight(1, 0, 0);
 
 	material mat;
-	mat.ambient = { 0.3f, 0.3f, 0.3f,1.0f };
-	mat.diffuse = { 0.8f, 0.8f, 0.8f, 1.0f };
-	mat.specular = { 0.1f, 0.1f, 0.1f, 1.0f };
+	mat.DiffuseAlbedo = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
+	mat.FresnelR0 = XMFLOAT3(0.1f, 0.08f, 0.1f);
+	mat.Shininess = 0.2f;
 	defaultEffect.SetMaterial(mat);
 
 	// 开启雾效
@@ -259,15 +254,18 @@ bool GameApp::InitResource()
 	mShadowBits = 0.000001f;
 	defaultEffect.SetShadowEnabled(mShadowEnabled);
 	defaultEffect.SetShadowBits(mShadowBits);
+	defaultEffect.SetAmbientLight(XMVectorSet(0.25f, 0.25f, 0.35f, 1.0f));
 
-	defaultEffect.SetViewMatrix(mCamera->ViewMatrix());
 	defaultEffect.SetProjMatrix(mCamera->PerspectiveProjectionMatrix());
-
-	terrainEffect.SetViewMatrix(mCamera->ViewPerspectiveProjectionMatrix());
 
 	defaultEffect.SetLightViewMatrix(mShadowCamera->ViewMatrix());
 	defaultEffect.SetLightProjMatrix(mShadowCamera->OrthogonalProjectionMatrix());
-	
+
+	terrainEffect.SetViewMatrix(mCamera->ViewPerspectiveProjectionMatrix());
+	terrainEffect.SetAmbientLight(XMVectorSet(0.25f, 0.25f, 0.35f, 1.0f));
 
 	return true;
 }
+
+
+

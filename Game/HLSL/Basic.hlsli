@@ -22,10 +22,12 @@ cbuffer CBChangesEveryObjectDrawing : register(b1)
 cbuffer CBDrawingStates : register(b2)
 {
     float4 gFogColor;
+    float4 gAmbientLight;
     int gFogEnabled;
     float gFogStart;
     float gFogRange;
     int gTextureUsed;
+
 	int gShadowEnabled;
 	float gBias;
 	float2 padding1;
@@ -56,6 +58,11 @@ cbuffer CBChangesRarely : register(b5)
     int gNumSpotLight;
     int gpad2;
 }
+
+struct VertexPosH
+{
+    float4 PosH : SV_POSITION;
+};
 
 struct SHADOW_PS_INPUT
 {

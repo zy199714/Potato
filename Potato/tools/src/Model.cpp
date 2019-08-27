@@ -51,6 +51,7 @@ namespace Potato
 		: mType(type)
 	{
 		mMeshs.push_back(new Mesh(device, meshdata, type));
+		mModelMaterials.push_back(new ModelMaterial());
 	}
 	
 	Model::~Model()

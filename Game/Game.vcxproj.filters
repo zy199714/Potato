@@ -42,5 +42,8 @@
     <ClCompile Include="TerrainEffect.cpp">
       <Filter>Material\effect</Filter>
     </ClCompile>
+    <ClCompile Include="NormalEffect.cpp">
+      <Filter>Material\effect</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

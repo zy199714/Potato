@@ -101,6 +101,9 @@ namespace Potato
 			MeshData meshData(vertexCount, indexCount);
 			VertexData vertexData;
 	
+			XMFLOAT3 pos;
+			XMFLOAT3 normal;
+
 			float phi = 0.0f, theta = 0.0f;
 			float per_phi = XM_PI / (levels+1);
 			float per_theta = XM_2PI / slices;
@@ -121,7 +124,7 @@ namespace Potato
 					y = radius * cosf(phi);
 					z = radius * sinf(phi) * sinf(theta);
 					// 计算出局部坐标、法向量、Tangent向量和纹理坐标
-					XMFLOAT3 pos = XMFLOAT3(x, y, z), normal;
+					pos = XMFLOAT3(x, y, z);
 					XMStoreFloat3(&normal, XMVector3Normalize(XMLoadFloat3(&pos)));
 					vertexData = { pos, normal, XMFLOAT3(-sinf(theta), 0.0f, cosf(theta)), color, XMFLOAT2(theta / XM_2PI, phi / XM_PI) };
 

@@ -201,6 +201,7 @@ xcopy $(ProjectDir)tools\*.h* /y $(SolutionDir)Game\$(SolutionName)\include\tool
     <ClInclude Include="core\RenderTerrain.h" />
     <ClInclude Include="core\StaticMesh.h" />
     <ClInclude Include="core\StaticMeshComponent.h" />
+    <ClInclude Include="tools\AnimationHelper.h" />
     <ClInclude Include="tools\DDSTextureLoader.h" />
     <ClInclude Include="tools\def.h" />
     <ClInclude Include="tools\DXTrace.h" />
@@ -230,6 +231,7 @@ xcopy $(ProjectDir)tools\*.h* /y $(SolutionDir)Game\$(SolutionName)\include\tool
     <ClCompile Include="core\src\GameObject.cpp" />
     <ClCompile Include="core\src\RenderSky.cpp" />
     <ClCompile Include="core\src\RenderTerrain.cpp" />
+    <ClCompile Include="tools\src\AnimationHelper.cpp" />
     <ClCompile Include="tools\src\DDSTextureLoader.cpp" />
     <ClCompile Include="tools\src\DXTrace.cpp" />
     <ClCompile Include="tools\src\GameTimer.cpp" />

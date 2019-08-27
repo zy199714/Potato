@@ -15,6 +15,7 @@ public:
 		directionlight dirLight[EffectBase::maxLights];
 		pointlight pointLight[EffectBase::maxLights];
 		spotlight spotLight[EffectBase::maxLights];
+		DirectX::XMVECTOR AmbientLight;
 		int numDirLight;
 		int numPointLight;
 		int numSpotLight;
@@ -178,6 +179,13 @@ void XM_CALLCONV TerrainEffect::SetEyePos(FXMVECTOR eyePos)
 {
 	auto& cBuffer = pImpl->cbFrame;
 	cBuffer.data.eyePos = eyePos;
+	pImpl->isDirty = cBuffer.isDirty = true;
+}
+
+void XM_CALLCONV TerrainEffect::SetAmbientLight(DirectX::FXMVECTOR ambientLight)
+{
+	auto& cBuffer = pImpl->cbRarely;
+	cBuffer.data.AmbientLight = ambientLight;
 	pImpl->isDirty = cBuffer.isDirty = true;
 }
 

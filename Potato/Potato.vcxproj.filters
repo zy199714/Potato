@@ -117,6 +117,9 @@
     <ClInclude Include="core\RenderTerrain.h">
       <Filter>core\base</Filter>
     </ClInclude>
+    <ClInclude Include="tools\AnimationHelper.h">
+      <Filter>tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tools\src\DDSTextureLoader.cpp">
@@ -178,6 +181,9 @@
     </ClCompile>
     <ClCompile Include="core\src\RenderTerrain.cpp">
       <Filter>core\src</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\src\AnimationHelper.cpp">
+      <Filter>tools\src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

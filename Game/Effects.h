@@ -15,7 +15,7 @@ public:
 
 	void SetRenderDefault(ID3D11DeviceContext* deviceContext) override;
 	void SetRenderShadowMap(ID3D11DeviceContext* deviceContext);
-
+	void SetRenderShowNormal(ID3D11DeviceContext* deviceContext);
 	/* */
 	void SetRendertype(RenderType type);
 
@@ -45,6 +45,7 @@ public:
 	/* 视点、光源位置设置 */
 	void XM_CALLCONV SetEyePos(DirectX::FXMVECTOR eyePos);
 	void XM_CALLCONV SetLightPos(DirectX::FXMVECTOR lightPos);
+	void XM_CALLCONV SetAmbientLight(DirectX::FXMVECTOR ambientLight);
 
 	/* 雾效设置 */
 	void SetFogEnabled(bool isOn);
@@ -52,6 +53,7 @@ public:
 	void SetFogStart(float fogStart);
 	void SetFogColor(DirectX::XMVECTOR fogColor);
 	void SetFogRange(float fogRange);
+
 
 	/* 阴影设置 */
 
@@ -104,6 +106,8 @@ public:
 	void XM_CALLCONV SetWorldMatrix(DirectX::FXMMATRIX W) override {};
 	void XM_CALLCONV SetViewMatrix(DirectX::FXMMATRIX PV) override;
 	void XM_CALLCONV SetProjMatrix(DirectX::FXMMATRIX P) override {};
+	void XM_CALLCONV SetAmbientLight(DirectX::FXMVECTOR ambientLight);
+
 
 	void SetTexture(ID3D11DeviceContext* devicecontext, UINT startslot, UINT numview, ID3D11ShaderResourceView* texture) override;
 	void SetTextureUsed(bool isUsed) override {};
@@ -121,3 +125,26 @@ private:
 	std::unique_ptr<Impl> pImpl;
 };
 
+class NormalEffect : public EffectBase
+{
+public:
+	NormalEffect();
+	~NormalEffect();
+
+	bool InitAll(ID3D11Device* device) override;
+	void Apply(ID3D11DeviceContext* deviceContext) override;
+
+public:
+	void SetRenderDefault(ID3D11DeviceContext* deviceContext) override;
+
+	void XM_CALLCONV SetWorldViewProjMatrix(DirectX::FXMMATRIX W, DirectX::CXMMATRIX V, DirectX::CXMMATRIX P) override {};
+	void XM_CALLCONV SetWorldMatrix(DirectX::FXMMATRIX W) override;
+	void XM_CALLCONV SetViewMatrix(DirectX::FXMMATRIX PV) override;
+	void XM_CALLCONV SetProjMatrix(DirectX::FXMMATRIX P) override;
+
+	void SetTexture(ID3D11DeviceContext* devicecontext, UINT startslot, UINT numview, ID3D11ShaderResourceView* texture) override {};
+	void SetTextureUsed(bool isUsed) override {};
+private:
+	class Impl;
+	std::unique_ptr<Impl> pImpl;
+};

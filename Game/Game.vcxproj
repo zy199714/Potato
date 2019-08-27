@@ -155,6 +155,7 @@
     <ClCompile Include="DefaultEffect.cpp" />
     <ClCompile Include="DefaultMaterial.cpp" />
     <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="NormalEffect.cpp" />
     <ClCompile Include="SkyEffect.cpp" />
     <ClCompile Include="TerrainEffect.cpp" />
     <ClCompile Include="WinMain.cpp" />

@@ -12,6 +12,7 @@ cbuffer CBChangesRarely : register(b1)
     DirectionalLight gDirLight[5];
     PointLight gPointLight[5];
     SpotLight gSpotLight[5];
+    float4 gAmbientLight;
     int gNumDirLight;
     int gNumPointLight;
     int gNumSpotLight;

@@ -20,10 +20,12 @@ public:
 	struct CBDrawingStates
 	{
 		DirectX::XMVECTOR fogColor;
+		DirectX::XMVECTOR AmbientLight;
 		int fogEnabled;
 		float fogStart;
 		float fogRange;
 		int textureUsed;
+
 		int shadowEnabled;
 		float shadowBits;
 		float pad1;
@@ -59,6 +61,8 @@ public:
 		ReleaseObject(basicObjectVS);
 		ReleaseObject(shadowMapInstanceVS);
 		ReleaseObject(shadowMapObjectVS);
+		ReleaseObject(normalGS);
+		ReleaseObject(normalPS);
 		ReleaseObject(basicPS);		
 		ReleaseObject(shadowPS);
 		ReleaseObject(instancePosNormalTexLayout);
@@ -83,8 +87,11 @@ public:
 	ID3D11VertexShader* shadowMapInstanceVS;
 	ID3D11VertexShader* shadowMapObjectVS;
 
+	ID3D11GeometryShader* normalGS;
+
 	ID3D11PixelShader* basicPS;
 	ID3D11PixelShader* shadowPS;
+	ID3D11PixelShader* normalPS;
 
 	ID3D11InputLayout* instancePosNormalTexLayout;
 	ID3D11InputLayout* vertexPosNormalTexLayout;
@@ -149,16 +156,26 @@ bool DefaultEffect::InitAll(ID3D11Device* device)
 	// 创建顶点布局
 	HR(device->CreateInputLayout(InputLayout[VertexType_Instance_PosNormalTex_WorldWorldT], InputLayoutCount[VertexType_Instance_PosNormalTex_WorldWorldT],
 		blob->GetBufferPointer(), blob->GetBufferSize(), &pImpl->instancePosNormalTexLayout));
+	ReleaseObject(blob);
 
 	// ******************
-	// 创建像素着色器
-	//ShadowMap_PS
-	ReleaseObject(blob);
+	// 创建像素着色器 ShadowMap_PS
+	//
 	HR(CreateShaderFromFile(L"HLSL\\Basic_PS.cso", L"HLSL\\Basic_PS.hlsl", "PS", "ps_5_0", &blob));
 	HR(device->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &pImpl->basicPS));
 	ReleaseObject(blob);
 	HR(CreateShaderFromFile(L"HLSL\\ShadowMap_PS.cso", L"HLSL\\ShadowMap_PS.hlsl", "PS", "ps_5_0", &blob));
 	HR(device->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &pImpl->shadowPS));
+	ReleaseObject(blob);
+	HR(CreateShaderFromFile(L"HLSL\\Normal_PS.cso", L"HLSL\\Normal_PS.hlsl", "PS", "ps_5_0", &blob));
+	HR(device->CreatePixelShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &pImpl->normalPS));
+	ReleaseObject(blob);
+	// ****************************************
+	// 几何着色器                                                      
+	// ****************************************
+
+	HR(CreateShaderFromFile(L"HLSL\\Normal_GS.cso", L"HLSL\\Normal_GS.hlsl", "GS", "gs_5_0", &blob));
+	HR(device->CreateGeometryShader(blob->GetBufferPointer(), blob->GetBufferSize(), nullptr, &pImpl->normalGS));
 
 	pImpl->cBufferPtrs.assign({
 		&pImpl->cbInstDrawing,
@@ -200,8 +217,7 @@ void DefaultEffect::SetRenderDefault(ID3D11DeviceContext* deviceContext)
 	deviceContext->OMSetDepthStencilState(nullptr, 0);
 	deviceContext->OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF);
 }
-
-
+ 
 void DefaultEffect::SetRenderShadowMap(ID3D11DeviceContext* deviceContext)
 {
 	if (mRenderType == RenderType_Object)
@@ -224,6 +240,25 @@ void DefaultEffect::SetRenderShadowMap(ID3D11DeviceContext* deviceContext)
 	deviceContext->OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF);
 }
 
+void DefaultEffect::SetRenderShowNormal(ID3D11DeviceContext* deviceContext)
+{
+	if (mRenderType == RenderType_Object)
+	{
+		deviceContext->IASetInputLayout(pImpl->vertexPosNormalTexLayout);
+		deviceContext->VSSetShader(pImpl->basicObjectVS, nullptr, 0);
+		deviceContext->GSSetShader(pImpl->normalGS, nullptr, 0);
+	}
+	else if (mRenderType == RenderType_Instance)
+	{
+		deviceContext->IASetInputLayout(pImpl->instancePosNormalTexLayout);
+		deviceContext->GSSetShader(pImpl->normalGS, nullptr, 0);
+	}
+	deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	deviceContext->RSSetState(nullptr);
+	deviceContext->PSSetShader(pImpl->normalPS, nullptr, 0);
+	deviceContext->OMSetDepthStencilState(nullptr, 0);
+	deviceContext->OMSetBlendState(nullptr, nullptr, 0xFFFFFFFF);
+}
 
 void DefaultEffect::SetRendertype(RenderType type)
 {
@@ -237,6 +272,9 @@ void DefaultEffect::Apply(ID3D11DeviceContext* deviceContext)
 	pCBuffers[0]->BindVS(deviceContext);
 	pCBuffers[3]->BindVS(deviceContext);
 	pCBuffers[4]->BindVS(deviceContext);
+
+	pCBuffers[3]->BindGS(deviceContext);
+	pCBuffers[4]->BindGS(deviceContext);
 
 	pCBuffers[1]->BindPS(deviceContext);
 	pCBuffers[2]->BindPS(deviceContext);
@@ -404,6 +442,13 @@ void DefaultEffect::SetFogRange(float fogRange)
 {
 	auto& cBuffer = pImpl->cbStates;
 	cBuffer.data.fogRange = fogRange;
+	pImpl->isDirty = cBuffer.isDirty = true;
+}
+
+void XM_CALLCONV DefaultEffect::SetAmbientLight(DirectX::FXMVECTOR ambientLight)
+{
+	auto& cBuffer = pImpl->cbStates;
+	cBuffer.data.AmbientLight = ambientLight;
 	pImpl->isDirty = cBuffer.isDirty = true;
 }
 
